@@ -1,0 +1,14 @@
+android_local_test(
+    name = "main_lib_test",
+    srcs = ["java/com/example/android/bazel/JniLibTest.java"],
+    manifest = "AndroidManifest.xml",
+    test_class = "com.example.android.bazel.JniLibTest",
+    deps = [
+        "//app/src/main:lib",
+        "@maven//:androidx_test_ext_junit",
+        "@maven//:org_assertj_assertj_core",
+        "@maven//:org_robolectric_robolectric",
+        "@maven//:org_robolectric_shadows_framework",
+        "@robolectric//bazel:android-all",
+    ],
+)

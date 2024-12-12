@@ -5,10 +5,11 @@ bazel_dep(
     version = "0.0.10",
 )
 
-bazel_dep(
-    name = "rules_jvm_external",
-    version = "5.3",
-)
+# add via WORKSPACE
+#bazel_dep(
+#    name = "rules_jvm_external",
+#    version = "5.3",
+#)
 
 bazel_dep(
     name = "rules_android",
