@@ -1,0 +1,27 @@
+load("@rules_android//android:rules.bzl", "android_binary", "android_library")
+
+android_library(
+    name = "my_test_lib",
+    srcs = ["java/com/example/android/bazel/test/SimpleInstrumentationTest.java"],
+    deps = [
+        "//app/src/main:lib",
+        "@maven//:androidx_test_core",
+        "@maven//:androidx_test_runner",
+        "@maven//:androidx_test_espresso_espresso_core",
+        "@maven//:junit_junit",
+    ],
+    # ...
+)
+
+android_binary(
+    name = "my_test_app",
+    instruments = "//app/src/main:app",
+    manifest = "AndroidTestManifest.xml",
+    deps = [":my_test_lib"],
+)
+
+android_instrumentation_test(
+    name = "my_test",
+    test_app = ":my_test_app",
+    target_device = "@android_test_support//tools/android/emulated_devices/generic_phone:android_31_x86",
+)

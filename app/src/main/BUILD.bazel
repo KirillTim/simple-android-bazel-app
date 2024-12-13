@@ -12,6 +12,7 @@ android_library(
       #  "@maven//:androidx_appcompat_appcompat",
       #  "@maven//:androidx_constraintlayout_constraintlayout",
     ],
+    visibility = ["//visibility:public"],
 )
 
 # cc_library(
@@ -23,4 +24,5 @@ android_binary(
     name = "app",
     manifest = "AndroidManifest.xml",
     deps = [":lib"],
+    visibility = ["//visibility:public"],
 )
