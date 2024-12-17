@@ -7,4 +7,11 @@ import org.junit.runner.RunWith;
 public class SimpleInstrumentationTest {
     @Test
     public void fooTest() {}
+
+    @Test
+    public void barTest() {
+        if (getClass() != null) {
+            throw new IllegalStateException("WTF");
+        }
+    }
 }

@@ -1,5 +1,23 @@
-load("@rules_android//android:rules.bzl", "android_binary", "android_library")
+load("@rules_android//android:rules.bzl", "android_binary", "android_library", "ApkInfo")
+#load("@rules_android//:providers/providers.bzl", "StarlarkApkInfo")
+load(":my_run_adb_rule.bzl", "my_run_adb", "my_run_aapt_macro", "my_run_adb_macro",
+"make_appt2_version_executable", "my_gen_script_that_prints_version", "write_adb_abs_path_to_file_2",
+"run_ait_with_adb_macro")
+load("@bazel_skylib//rules:run_binary.bzl", "run_binary")
 
+run_binary(name="try_run_aapt", args = ["version"], tool = "@androidsdk//:aapt2_binary", outs = ["out.txt"])
+
+run_ait_with_adb_macro(
+    name = "run_ait_with_adb_macro",
+    app = "//app/src/main:app",
+    test_app = ":my_test_app",
+    adb_tool = "@androidsdk//:platform-tools/adb",
+    aapt2_tool = "@androidsdk//:aapt2_binary")
+
+my_run_aapt_macro(name="try_run_appt2_macro")
+my_run_adb_macro(name="my_run_adb_macro")
+make_appt2_version_executable(name="make_appt2_version_executable")
+my_gen_script_that_prints_version(name="my_gen_script_that_prints_version")
 android_library(
     name = "my_test_lib",
     srcs = ["java/com/example/android/bazel/test/SimpleInstrumentationTest.java"],
@@ -13,6 +31,8 @@ android_library(
     # ...
 )
 
+#write_adb_abs_path_to_file_2(name = "write_adb_abs_path_to_file_2", adb_tool_label="@androidsdk//:platform-tools/adb")
+
 android_binary(
     name = "my_test_app",
     instruments = "//app/src/main:app",
@@ -20,8 +40,8 @@ android_binary(
     deps = [":my_test_lib"],
 )
 
-android_instrumentation_test(
-    name = "my_test",
-    test_app = ":my_test_app",
-    target_device = "@android_test_support//tools/android/emulated_devices/generic_phone:android_31_x86",
-)
+#android_instrumentation_test(
+#    name = "my_test",
+#    test_app = ":my_test_app",
+#    target_device = "@android_test_support//tools/android/emulated_devices/generic_phone:android_31_x86",
+#)
