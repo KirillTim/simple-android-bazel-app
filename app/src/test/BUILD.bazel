@@ -2,10 +2,20 @@ load("@rules_android//android:rules.bzl", "android_binary", "android_library", "
 #load("@rules_android//:providers/providers.bzl", "StarlarkApkInfo")
 load(":my_run_adb_rule.bzl", "my_run_adb", "my_run_aapt_macro", "my_run_adb_macro",
 "make_appt2_version_executable", "my_gen_script_that_prints_version", "write_adb_abs_path_to_file_2",
-"run_ait_with_adb_macro")
+"run_ait_with_adb_macro", "get_signed_apk_path_from_info", "run_ait_with_adb_macro_macro")
 load("@bazel_skylib//rules:run_binary.bzl", "run_binary")
 
 run_binary(name="try_run_aapt", args = ["version"], tool = "@androidsdk//:aapt2_binary", outs = ["out.txt"])
+
+get_signed_apk_path_from_info(name = "get_signed_apk_path_from_info", apk = ":my_test_app", output = "my_file.txt")
+
+run_ait_with_adb_macro_macro(
+    name="run_ait_with_adb_macro_macro",
+    app = "//app/src/main:app",
+    test_app = ":my_test_app",
+    adb_tool = "@androidsdk//:platform-tools/adb",
+    aapt2_tool = "@androidsdk//:aapt2_binary")
+
 
 run_ait_with_adb_macro(
     name = "run_ait_with_adb_macro",

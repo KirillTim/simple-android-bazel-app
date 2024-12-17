@@ -52,6 +52,46 @@ run_ait_with_adb = rule(
     },
 )
 
+def _get_signed_apk_path_from_info(ctx):
+    print("ctx.attr: {}".format(ctx.attr))
+    print("ctx.outputs.output: {}".format(ctx.outputs.output))
+
+    apk_path = _get_apk_info(ctx.attr.apk).path
+    ctx.actions.write(output = ctx.outputs.output, content = apk_path)
+
+
+get_signed_apk_path_from_info = rule(
+    implementation = _get_signed_apk_path_from_info,
+    attrs = {
+        "apk": attr.label(providers = [[ApkInfo], [StarlarkApkInfo]], allow_files = True),
+        "output": attr.output(mandatory = True)
+    }
+)
+
+def run_ait_with_adb_macro_macro(name, app, test_app, adb_tool, aapt2_tool):
+    app_path_file = name + "_app_path.txt"
+    test_app_path_file = name + "_test_app_path.txt"
+    get_signed_apk_path_from_info(name = name + "_get_app_path", apk = app, output = app_path_file)
+    get_signed_apk_path_from_info(name = name + "_get_test_app_path", apk = test_app, output = test_app_path_file)
+    run_ait_sh = ":run_ait_with_adb.sh"
+    native.genrule(
+        name = name,
+        outs = [name+"_script.sh"],
+        srcs = [run_ait_sh, app_path_file, test_app_path_file],
+        tools = [aapt2_tool],
+        cmd = """
+        app_path=$$(cat $(location {}))
+        test_app_path=$$(cat $(location {}))
+        aapt2_tool=$(location {})
+        cat $(location {}) |
+        sed "s@%%apk_path%%@$$app_path@g" |
+        sed "s@%%test_apk_path%%@$$test_app_path@g" |
+        sed "s@%%adb_tool_path%%@adb@g" |
+        sed "s@%%appt2_tool_path%%@$$aapt2_tool@g" > $@
+        """.format(app_path_file, test_app_path_file, aapt2_tool, run_ait_sh)
+    )
+
+
 def run_ait_with_adb_macro(name, app, test_app, adb_tool, aapt2_tool):
     print("run_ait_with_adb_macro, app: {}".format(app))
     print("run_ait_with_adb_macro, test_app: {}".format(test_app))
