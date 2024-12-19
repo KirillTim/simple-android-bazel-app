@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.app.Activity;
 import com.example.android.bazel.JniLib;
+import com.example.android.bazel.SecondJniLib;
 
 // it was AppCompatActivity
 public class MainActivity extends Activity {
@@ -17,7 +18,8 @@ public class MainActivity extends Activity {
     TextView tv = (TextView) findViewById(R.id.sample_text);
     // tv.setText("just a simple string, not from stringFromJNI()");
     String message = new JniLib().stringFromJNI();
-    tv.setText("String from JNI: " + message);
+    String messageFromSecondJni = new SecondJniLib().stringFromJNI();
+    tv.setText("String from JNI: " + message +", string from second jni: " + messageFromSecondJni);
   }
 
 }
