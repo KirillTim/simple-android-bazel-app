@@ -1,7 +1,7 @@
 "Bazel dependencies"
 
 bazel_dep(name = "rules_jvm_external", version = "5.3")
-bazel_dep(name = "rules_android", version = "0.5.1")
+bazel_dep(name = "rules_android", version = "0.6.0")
 bazel_dep(name = "rules_android_ndk", version = "0.1.2")
 
 android_ndk_repository_extension = use_extension(
