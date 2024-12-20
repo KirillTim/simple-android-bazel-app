@@ -1,15 +1,16 @@
 load("@rules_android//android:rules.bzl", "android_binary", "android_library")
+load(":cc_lib_wrapper_for_android.bzl", "cc_lib_wrapper_for_android")
 
 android_library(
     name = "lib_jni",
     srcs = ["java/com/example/android/bazel/JniLib.java"],
-    deps = [":jni_lib_cc"],
+    deps = [":jni_lib_wrapped"],
 )
 
 android_library(
     name = "lib_second_jni",
     srcs = ["java/com/example/android/bazel/SecondJniLib.java"],
-    deps = [":second_jni_lib_cc"],
+    deps = [":second_jni_lib_wrapped"],
 )
 
 android_library(
@@ -40,12 +41,23 @@ cc_library(
     srcs = ["cpp/second_jni_lib.cc"],
 )
 
-# libapp.so is bundled to APK
+cc_lib_wrapper_for_android(
+    name = "second_jni_lib_wrapped",
+    lib_name = "second_jni_lib",
+    cc_library_target = ":second_jni_lib_cc"
+)
+
 cc_library(
     name = "jni_lib_cc",
     srcs = ["cpp/jni_lib.cc"],
     linkopts = ["-llog"],
     deps = ["cpp_jni_dep"],
+)
+
+cc_lib_wrapper_for_android(
+    name = "jni_lib_wrapped",
+    lib_name = "jni_lib",
+    cc_library_target = ":jni_lib_cc"
 )
 
 android_binary(
