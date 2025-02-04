@@ -1,0 +1,25 @@
+load("@rules_android//android:rules.bzl", "android_binary", "android_library")
+load(":run_ait_with_adb.bzl", "my_android_instrumentation_test")
+
+android_library(
+    name = "simple_test_lib",
+    srcs = ["java/com/example/android/bazel/test/SimpleInstrumentationTest.java"],
+    deps = [
+        "//app/src/main:lib",
+        "//app/src/main:lib_jni",
+        "@maven//:androidx_test_runner",
+        "@maven//:junit_junit",
+    ],
+)
+
+android_binary(
+    name = "simple_test_app",
+    manifest = "AndroidTestManifest.xml",
+    deps = [":simple_test_lib"],
+)
+
+my_android_instrumentation_test(
+    name = "my_instrumentation_test",
+    app = "//app/src/main:app",
+    test_app = ":simple_test_app",
+)
