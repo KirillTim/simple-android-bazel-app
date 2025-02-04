@@ -4,6 +4,7 @@ android_library(
     name = "lib_jni",
     srcs = ["java/com/example/android/bazel/JniLib.java"],
     deps = ["jni_lib_cc"],
+    visibility = ["//visibility:public"],
 )
 
 android_library(
@@ -15,6 +16,7 @@ android_library(
     manifest = "AndroidManifest.xml",
     resource_files = glob(["res/**/*"]),
     deps = [":lib_jni"],
+    visibility = ["//visibility:public"],
 )
 
 cc_library(
@@ -43,4 +45,5 @@ android_binary(
     deps = [
         ":lib",
     ],
+    visibility = ["//visibility:public"],
 )
