@@ -2,12 +2,3 @@
 
 bazel_dep(name = "rules_jvm_external", version = "6.6")
 bazel_dep(name = "rules_android", version = "0.6.0")
-bazel_dep(name = "rules_android_ndk", version = "0.1.2")
-
-android_ndk_repository_extension = use_extension(
-    "@rules_android_ndk//:extension.bzl",
-    "android_ndk_repository_extension",
-)
-use_repo(android_ndk_repository_extension, "androidndk")
-
-register_toolchains("@androidndk//:all")

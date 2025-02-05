@@ -9,7 +9,8 @@ import org.junit.runner.RunWith;
 public class SimpleInstrumentationTest {
     @Test
     public void fooTest() {
-        String message = new com.example.android.bazel.JniLib().stringFromJNI();
+//        String message = new com.example.android.bazel.JniLib().stringFromJNI();
+        String message = com.example.android.bazel.SomeOtherNonJNIClass.getString();
         System.out.println("SimpleInstrumentationTest, message: " + message);
         assertNotNull(message);
     }

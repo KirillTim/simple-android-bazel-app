@@ -1,42 +1,15 @@
 load("@rules_android//android:rules.bzl", "android_binary", "android_library")
 
 android_library(
-    name = "lib_jni",
-    srcs = ["java/com/example/android/bazel/JniLib.java"],
-    deps = ["jni_lib_cc"],
-    visibility = ["//visibility:public"],
-)
-
-android_library(
     name = "lib",
     srcs = [
         "java/com/example/android/bazel/MainActivity.java",
+        "java/com/example/android/bazel/SomeOtherNonJNIClass.java",
     ],
     custom_package = "com.example.android.bazel",
     manifest = "AndroidManifest.xml",
     resource_files = glob(["res/**/*"]),
-    deps = [":lib_jni"],
     visibility = ["//visibility:public"],
-)
-
-cc_library(
-    name = "cpp_jni_dep",
-    srcs = ["cpp/jni_dep.cc"],
-    hdrs = ["cpp/jni_dep.h"],
-)
-
-cc_binary(
-    name = "cpp_main",
-    srcs = ["cpp/main.cc"],
-    deps = [":cpp_jni_dep"],
-)
-
-# libapp.so is bundled to APK
-cc_library(
-    name = "jni_lib_cc",
-    srcs = ["cpp/jni_lib.cc"],
-    linkopts = ["-llog"],
-    deps = ["cpp_jni_dep"],
 )
 
 android_binary(

@@ -6,7 +6,6 @@ android_library(
     srcs = ["java/com/example/android/bazel/test/SimpleInstrumentationTest.java"],
     deps = [
         "//app/src/main:lib",
-        "//app/src/main:lib_jni",
         "@maven//:androidx_test_runner",
         "@maven//:junit_junit",
     ],
