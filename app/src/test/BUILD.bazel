@@ -1,5 +1,5 @@
 load("@rules_android//android:rules.bzl", "android_binary", "android_library")
-load(":run_ait_with_adb.bzl", "my_android_instrumentation_test")
+load(":run_ait_with_adb.bzl", "my_android_instrumentation_test", "my_runfile_rule_test")
 
 android_library(
     name = "simple_test_lib",
@@ -22,4 +22,9 @@ my_android_instrumentation_test(
     name = "my_instrumentation_test",
     app = "//app/src/main:app",
     test_app = ":simple_test_app",
+)
+
+my_runfile_rule_test(
+    name = "my_runfile_rule_test",
+    app = "//app/src/main:app",
 )
